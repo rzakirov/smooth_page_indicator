@@ -21,24 +21,35 @@ class ExpandingDotsPainter extends IndicatorPainter {
     for (var i = 0; i < count; i++) {
       var color = effect.dotColor;
       final activeDotWidth = effect.dotWidth * effect.expansionFactor;
+      final activeDotHeight = effect.dotWidth * 1.8;
       final expansion =
           (dotOffset / 2 * ((activeDotWidth - effect.dotWidth) / .5));
+
+      final heightExpansion =
+          (dotOffset / 2 * ((activeDotHeight - effect.dotWidth) / .5));
+
       final xPos = drawingOffset + effect.spacing;
       var width = effect.dotWidth;
+
+      var heightFactor = effect.dotWidth;
+
       if (i == current) {
         color = Color.lerp(effect.activeDotColor, effect.dotColor, dotOffset);
         width = activeDotWidth - expansion;
+        heightFactor = activeDotHeight - heightExpansion;
       } else if (i - 1 == current) {
         width = effect.dotWidth + expansion;
+        heightFactor = effect.dotWidth + heightExpansion;
+
         color =
             Color.lerp(effect.activeDotColor, effect.dotColor, 1.0 - dotOffset);
       }
       final yPos = size.height / 2;
       final rRect = RRect.fromLTRBR(
         xPos,
-        yPos - effect.dotHeight / 2,
+        yPos - ((effect.dotHeight) / heightFactor * 8) / 2,
         xPos + width,
-        yPos + effect.dotHeight / 2,
+        yPos + ((effect.dotHeight) / heightFactor * 8) / 2,
         dotRadius,
       );
       drawingOffset = rRect.right;
